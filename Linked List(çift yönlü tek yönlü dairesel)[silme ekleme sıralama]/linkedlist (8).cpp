@@ -1,0 +1,93 @@
+#include <stdio.h> 
+#include <conio.h> 
+#include <stdlib.h>
+
+struct TOGRENCI {
+	int vize;
+	int final;
+	struct TOGRENCI *sonraki;
+/**/struct TOGRENCI *onceki;
+};
+
+
+int main () 
+{ 
+	TOGRENCI *ilk=NULL, *ptr=NULL, *gecici=NULL;
+	int devam=1;
+	
+	// [--LISTE OLUSTUR--]
+	// [--eleman sayisi dinamik--]  // QUEUE = KUYRUK
+	
+	do{ 
+	     if (ilk==NULL)
+	     {
+			ilk = (TOGRENCI*) malloc(1*sizeof(TOGRENCI));	
+			printf("Vize  : ");scanf("%d",&ilk->vize);
+			printf("Final : ");scanf("%d",&ilk->final);
+			ilk->sonraki = NULL;
+/**/		ilk->onceki = NULL;
+			ptr = ilk;   
+		 }
+		 else
+		 {
+			ptr->sonraki = (TOGRENCI*) malloc(1*sizeof(TOGRENCI));	
+/**/		ptr->sonraki->onceki = ptr;
+			ptr = ptr->sonraki;
+			printf("Vize  : ");scanf("%d",&ptr->vize);
+			printf("Final : ");scanf("%d",&ptr->final);
+			ptr->sonraki = NULL;   
+		 }
+
+	printf("Devam için [1] : ");scanf("%d",&devam);
+	
+	} while (devam==1);
+	
+	
+	// [--LISTE SAYISI--]
+
+	ptr = ilk;
+	int say = 0;
+	         
+	while (ptr!=NULL)  // (!ptr)
+	{  
+		ptr=ptr->sonraki; 
+		say++;
+	}
+
+	printf("\nToplam Kuyruk Uzunlugu %d\n\n",say);
+
+
+	// [--LISTE GORUNTULE--] KALAN KISIM BÝR ÖNCEKÝ ÖRNEKLE AYNI
+
+	
+	ptr = ilk;// Dongü için ilk elemana tekrar dön/ilk elemaný hala kaybetme.
+	         
+	while (ptr!=NULL)  // (!ptr)
+	{  
+		// O Anki Pointer'ýn Gösterdiði Elemaný Kullan
+/**/	printf("Vize[%d] Final[%d] Adres[%x]  =>  Sonraki[%x] Onceki[%x]\n",ptr->vize, ptr->final,ptr,ptr->sonraki,ptr->onceki); 		
+		// Bir Sonraki Elemana Geç
+		ptr=ptr->sonraki; 
+	}
+	
+	// [--LISTE SIL--]
+
+	
+	ptr = ilk;
+	
+	while (ptr!=NULL)// Dongü için ilk elemana tekrar dön/ilk elemaný hala kaybetme.
+	{  
+		// Geçici bir pointer'a suanki elemaný ata
+		gecici = ptr;
+		// suanki eleman pointeri bir sonraki elemaný göstersin
+		ptr    = ptr->sonraki;
+		//gecici elemaný sil
+		free(gecici);
+	}
+
+	
+	getch();
+	
+	return 0; 
+	
+}
